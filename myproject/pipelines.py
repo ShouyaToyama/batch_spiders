@@ -1,4 +1,5 @@
 import json
+from logging import getLogger
 
 class MyprojectPipeline(object):
 
@@ -13,6 +14,8 @@ class MyprojectPipeline(object):
         self.dir = dir
 
     def open_spider(self, spider):
+        self.logger = getLogger(__name__)
+        self.logger.info('='*30 + 'Start ' + spider.name + '='*30)
         self.json_lines = open(
             '{dir}{spider_name}.jl'.format(dir=self.dir, spider_name=spider.name),
             mode='a'
@@ -20,6 +23,7 @@ class MyprojectPipeline(object):
 
     def close_spider(self, spider):
         self.json_lines.close()
+        self.logger.info('='*30 + 'End ' + spider.name + '='*30)
 
     def process_item(self, item, spider):
         # itemオブジェクトの値をJSON形式で書き込みする
